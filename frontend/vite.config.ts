@@ -12,6 +12,14 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
   ],
+  server: {
+    host: '0.0.0.0',
+    port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
+    hmr: {
+      host: 'localhost',
+      port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

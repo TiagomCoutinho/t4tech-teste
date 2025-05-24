@@ -1,6 +1,6 @@
 FROM node:20-slim
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN npm ci
 COPY . .
 CMD ["npx", "vite", "--host", "0.0.0.0"]
