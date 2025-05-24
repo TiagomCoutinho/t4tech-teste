@@ -26,6 +26,18 @@ services:
       - ./backend/database:/app/database
     networks:
       - app-network
+  backend-test:
+    build: ./backend
+    environment:
+      - PORT=3000
+      - FRONTEND_URL=http://frontend:5173
+      - BALL_DONT_LIE_API_KEY=${BALL_DONT_LIE_API_KEY}
+      - NODE_ENV=test
+    volumes:
+      - ./backend:/app
+    command: ["npm", "run", "test"]
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
