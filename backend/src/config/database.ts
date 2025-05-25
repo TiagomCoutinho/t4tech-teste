@@ -80,4 +80,33 @@ const getPlayersFromDatabase = (): Promise<Player[]> => {
 	})
 }
 
-export {db, initializeDatabase, getPlayersFromDatabase}
+const getPlayerByIdFromDatabase = (id: number): Promise<Player | undefined> => {
+	return new Promise((resolve, reject) => {
+		db.get('SELECT * FROM players WHERE id = ?', [id], (error: Error | null, row: Player) => {
+			if (error) {
+				console.error('Error fetching player from database:', error)
+				return reject(error)
+			}
+			resolve(row)
+		})
+	})
+}
+
+const deletePlayerByIdFromDatabase = (id: number): Promise<void> => {
+	return new Promise((resolve, reject) => {
+		db.run('DELETE FROM players WHERE id = ?', [id], function (error: Error | null) {
+			if (error) {
+				console.error('Error deleting player from database:', error)
+				return reject(error)
+			}
+			if (this.changes === 0) {
+				console.info(`No player found with id ${id}`)
+			} else {
+				console.info(`Player with id ${id} deleted`)
+			}
+			resolve()
+		})
+	})
+}
+
+export {db, initializeDatabase, getPlayersFromDatabase, getPlayerByIdFromDatabase, deletePlayerByIdFromDatabase}
