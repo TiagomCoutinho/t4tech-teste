@@ -89,7 +89,6 @@ app.put('/players/:id', (req: Request, res: Response) => {
       full_name: playerData.team_name || ''
     }
   }
-  console.log('Player data:', player)
 
   if (!player) {
     return res.status(400).json({ error: 'Invalid player data' })
