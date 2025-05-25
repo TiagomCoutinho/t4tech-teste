@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView, RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+  <header class="h-16 content-center border-white border-b-1 bg-slate-900">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-2">
+      <RouterLink to="/">
+        <h1 class="text-2xl font-bold">NBA <span class="text-xl text-gray-400">Player list</span></h1>
+      </RouterLink>
+      <nav class="flex">
+        <RouterLink to="/" class="py-4 px-2 hover:text-gray-400">Home</RouterLink>
+        <RouterLink to="/about" class="py-4 px-2 hover:text-gray-400">About</RouterLink>
       </nav>
     </div>
   </header>
-
-  <RouterView />
+  <div class="max-w-7xl mx-auto px-2">
+    <RouterView />
+  </div>
 </template>
