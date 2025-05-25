@@ -3,9 +3,9 @@ import type { Database } from 'sqlite3'
 import type { Player } from '../utils/apiBallDontLie'
 import { getPlayers } from '../utils/apiBallDontLie'
 
-export const db: Database = new sqlite3.Database(process.env.NODE_ENV === 'test' ? ':memory:' : 'src/config/players.db')
+const db: Database = new sqlite3.Database(process.env.NODE_ENV === 'test' ? ':memory:' : 'src/config/players.db')
 
-export const initializeDatabase = (): Promise<void> => {
+const initializeDatabase = (): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		db.serialize(() => {
 			db.run(`
@@ -67,3 +67,17 @@ export const populateDatabase = async (): Promise<void> => {
 		console.error('Error populating database:', error)
 	}
 }
+
+const getPlayersFromDatabase = (): Promise<Player[]> => {
+	return new Promise((resolve, reject) => {
+		db.all('SELECT * FROM players', (error: Error | null, rows: Player[]) => {
+			if (error) {
+				console.error('Error fetching players from database:', error)
+				return reject(error)
+			}
+			resolve(rows)
+		})
+	})
+}
+
+export {db, initializeDatabase, getPlayersFromDatabase}

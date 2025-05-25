@@ -26,7 +26,7 @@ export interface Player {
     team: Team;
 }
 
-export const getPlayers = async () => await axios.get('https://api.balldontlie.io/v1/players', {
+export const getPlayers = async () => await axios.get('https://api.balldontlie.io/v1/players?per_page=100', {
     headers: {
         "Authorization": process.env.BALL_DONT_LIE_API_KEY || ""
     }

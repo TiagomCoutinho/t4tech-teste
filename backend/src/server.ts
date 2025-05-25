@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from 'express'
-import { initializeDatabase, populateDatabase } from './config/database'
+import { initializeDatabase, populateDatabase, getPlayersFromDatabase } from './config/database'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -19,7 +19,14 @@ async function databaseSetup() {
 databaseSetup()
 
 app.get('/players', (req: Request, res: Response) => {
-  res.send('Startup api')
+  getPlayersFromDatabase()
+    .then(players => {
+      res.json(players)
+    })
+    .catch(error => {
+      console.error('Error fetching players from database:', error)
+      res.status(500).send('Internal Server Error')
+    })
 })
 
 app.listen(port, () => {
