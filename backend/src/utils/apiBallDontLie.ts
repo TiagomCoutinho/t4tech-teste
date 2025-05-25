@@ -26,14 +26,8 @@ export interface Player {
     team: Team;
 }
 
-const requestOptions = (endpoint: string, method: string) => {
-    return {
-        url: `https://api.balldontlie.io/v1/${endpoint}`,
-        method: method,
-        headers: {
-            "Authorization": process.env.BALL_DONT_LIE_API_KEY || ""
-        }
+export const getPlayers = async () => await axios.get('https://api.balldontlie.io/v1/players', {
+    headers: {
+        "Authorization": process.env.BALL_DONT_LIE_API_KEY || ""
     }
-}
-
-export const getPlayers = async () => await axios.request(requestOptions('players?per_page=100', 'GET'));
+});

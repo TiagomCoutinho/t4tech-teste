@@ -24,6 +24,7 @@ services:
     volumes:
       - ./backend:/app
       - ./backend/database:/app/database
+    command: npm run dev
     networks:
       - app-network
   backend-test:
@@ -35,7 +36,7 @@ services:
       - NODE_ENV=test
     volumes:
       - ./backend:/app
-    command: ["npm", "run", "test"]
+    command: npm test
     networks:
       - app-network
   frontend-test:
