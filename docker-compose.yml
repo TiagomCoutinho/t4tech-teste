@@ -4,7 +4,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - BACKEND_API_URL=http://backend:3000/api
+      - VITE_BACKEND_API_URL=http://localhost:3000/
       - PORT=5173
     depends_on:
       - backend
@@ -19,7 +19,7 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
-      - FRONTEND_URL=http://frontend:5173
+      - FRONTEND_URL=http://localhost:5173
       - BALL_DONT_LIE_API_KEY=${BALL_DONT_LIE_API_KEY}
     volumes:
       - ./backend:/app
@@ -31,7 +31,7 @@ services:
     build: ./backend
     environment:
       - PORT=3000
-      - FRONTEND_URL=http://frontend:5173
+      - FRONTEND_URL=http://localhost:5173
       - BALL_DONT_LIE_API_KEY=${BALL_DONT_LIE_API_KEY}
       - NODE_ENV=test
     volumes:
@@ -42,7 +42,7 @@ services:
   frontend-test:
     build: ./frontend
     environment:
-      - BACKEND_API_URL=http://backend:3000/api
+      - VITE_BACKEND_API_URL=http://localhost:3000/
       - PORT=5173
       - NODE_ENV=test
     volumes:

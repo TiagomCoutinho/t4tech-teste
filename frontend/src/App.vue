@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
+
+import { usePlayersStore } from '@/stores/players'
+onMounted(() => {
+  const playersStore = usePlayersStore()
+  playersStore.fetchPlayers()
+})
 </script>
 
 <template>
@@ -14,7 +21,7 @@ import { RouterView, RouterLink } from 'vue-router'
       </nav>
     </div>
   </header>
-  <div class="max-w-7xl mx-auto px-2">
+  <div class="max-w-7xl mx-auto p-2">
     <RouterView />
   </div>
 </template>

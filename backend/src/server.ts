@@ -2,9 +2,13 @@ import express, { Express, Request, Response } from 'express'
 import { initializeDatabase, populateDatabase, getPlayersFromDatabase, getPlayerByIdFromDatabase, deletePlayerByIdFromDatabase, updatePlayerByIdInDatabase } from './config/database'
 import type { Player } from './utils/apiBallDontLie'
 import dotenv from 'dotenv'
+import cors from 'cors'
 dotenv.config()
 
 const app: Express = express()
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*'
+}))
 app.use(express.json())
 const port:number = parseInt(process.env.PORT || '3000')
 
