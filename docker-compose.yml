@@ -38,6 +38,17 @@ services:
     command: ["npm", "run", "test"]
     networks:
       - app-network
+  frontend-test:
+    build: ./frontend
+    environment:
+      - BACKEND_API_URL=http://backend:3000/api
+      - PORT=5173
+      - NODE_ENV=test
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "run", "test:unit"]
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
