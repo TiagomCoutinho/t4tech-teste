@@ -94,7 +94,7 @@ const getPlayerByIdFromDatabase = (id: number): Promise<Player | undefined> => {
 
 const deletePlayerByIdFromDatabase = (id: number): Promise<void> => {
 	return new Promise((resolve, reject) => {
-		db.run('DELETE FROM players WHERE id = ?', [id], function (error: Error | null) {
+		db.run('DELETE FROM players WHERE id = ?', [id], function (this: sqlite3.RunResult, error: Error | null) {
 			if (error) {
 				console.error('Error deleting player from database:', error)
 				return reject(error)
@@ -109,4 +109,71 @@ const deletePlayerByIdFromDatabase = (id: number): Promise<void> => {
 	})
 }
 
-export {db, initializeDatabase, getPlayersFromDatabase, getPlayerByIdFromDatabase, deletePlayerByIdFromDatabase}
+const updatePlayerByIdInDatabase = (id: number, player: Player): Promise<void> => {
+	return new Promise((resolve, reject) => {
+		const requiredFields = ['first_name', 'last_name', 'position', 'height', 'weight', 'jersey_number', 'college', 'country', 'team'] as const;
+		for (const field of requiredFields) {
+			if (player[field as keyof Player] === undefined || player[field as keyof Player] === null) {
+				const error = new Error(`Missing required field: ${field}`);
+				console.error(error.message);
+				return reject(error);
+			}
+		}
+
+		const columns: string = "first_name = ?, last_name = ?, position = ?, height = ?, weight = ?, jersey_number = ?, college = ?, country = ?, draft_year = ?, draft_round = ?, draft_number = ?, team_name = ?";
+		console.log('Columns:', columns);
+		console.log('Parameters:', [
+			player.first_name,
+			player.last_name,
+			player.position,
+			player.height,
+			player.weight,
+			player.jersey_number,
+			player.college,
+			player.country,
+			player.draft_year || null,
+			player.draft_round || null,
+			player.draft_number || null,
+			player.team.full_name,
+			id
+		]);
+
+		db.serialize(() => {
+			console.log('Calling db.run');
+			db.run(
+				`UPDATE players SET ${columns} WHERE id = ?`,
+				[
+					player.first_name,
+					player.last_name,
+					player.position,
+					player.height,
+					player.weight,
+					player.jersey_number,
+					player.college,
+					player.country,
+					player.draft_year || null,
+					player.draft_round || null,
+					player.draft_number || null,
+					player.team.full_name,
+					id
+				],
+				function (this: sqlite3.RunResult, error: Error | null) {
+					console.log('db.run callback executed');
+					if (error) {
+						console.error('Error updating player in database:', error);
+						return reject(error);
+					}
+					if (this.changes === 0) {
+						console.info(`No player found with id ${id}`);
+						return reject(new Error(`No player found with id ${id}`));
+					}
+					console.info(`Player with id ${id} updated`);
+					resolve();
+				}
+			);
+			console.log('db.run called');
+		});
+	});
+}
+
+export {db, initializeDatabase, getPlayersFromDatabase, getPlayerByIdFromDatabase, deletePlayerByIdFromDatabase, updatePlayerByIdInDatabase}

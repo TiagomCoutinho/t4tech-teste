@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 export interface Team {
-    id: number;
-    conference: string;
-    division: string;
-    city: string;
-    name: string;
+    id?: number;
+    conference?: string;
+    division?: string;
+    city?: string;
+    name?: string;
     full_name: string;
-    abbreviation: string;
+    abbreviation?: string;
 }
 
 export interface Player {
