@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Player } from '@/types/nbaTypes'
+import axios from 'axios'
 
 export const usePlayersStore = defineStore('players', () => {
   const players = ref<Player[]>([])
@@ -31,16 +32,9 @@ export const usePlayersStore = defineStore('players', () => {
 
 	async function fetchUpdatePlayerById(id: number, updatedPlayer: Player) {
 		try {
-			const response = await fetch(import.meta.env.VITE_BACKEND_API_URL + `players/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(updatedPlayer)
-			})
+			const response = await axios.put(`${import.meta.env.VITE_BACKEND_API_URL}players/${id}`, updatedPlayer)
 			if (response.status === 200) {
-				const playerData = await response.json()
-				updatePlayerById(id, playerData)
+				updatePlayerById(id, response.data)
 			} else {
 				console.error('Failed to update player:', response.statusText)
 			}
@@ -51,9 +45,7 @@ export const usePlayersStore = defineStore('players', () => {
 
 	async function fetchDeletePlayerById(id: number) {
 		try {
-			const response = await fetch(import.meta.env.VITE_BACKEND_API_URL + `players/${id}`, {
-				method: 'DELETE'
-			})
+			const response = await axios.delete(`${import.meta.env.VITE_BACKEND_API_URL}players/${id}`)
 			if (response.status === 200) {
 				deletePlayerById(id)
 			} else {
@@ -66,10 +58,9 @@ export const usePlayersStore = defineStore('players', () => {
 
   async function fetchAllPlayers() {
 		try {
-			const response = await fetch(import.meta.env.VITE_BACKEND_API_URL + 'players')
+			const response = await axios.get(import.meta.env.VITE_BACKEND_API_URL + 'players')
 			if (response.status === 200) {
-				const playersData = await response.json()
-				setPlayers(playersData)
+				setPlayers(response.data)
 			} else {
 				console.error('Failed to fetch players:', response.statusText)
 			}

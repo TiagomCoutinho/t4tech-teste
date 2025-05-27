@@ -3,4 +3,4 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm i
 COPY . .
-CMD ["npx", "vite", "--host", "0.0.0.0"]
+CMD ["npm", "run", "dev"]
