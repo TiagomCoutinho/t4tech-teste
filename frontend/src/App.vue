@@ -5,7 +5,7 @@ import { RouterView, RouterLink } from 'vue-router'
 import { usePlayersStore } from '@/stores/players'
 onMounted(() => {
   const playersStore = usePlayersStore()
-  playersStore.fetchPlayers()
+  playersStore.fetchAllPlayers()
 })
 </script>
 
