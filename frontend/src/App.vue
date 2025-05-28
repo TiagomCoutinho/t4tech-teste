@@ -21,7 +21,7 @@ onMounted(() => {
       </nav>
     </div>
   </header>
-  <div class="max-w-7xl mx-auto p-2">
+  <div class="max-w-7xl mx-auto px-2 py-8">
     <RouterView />
   </div>
 </template>

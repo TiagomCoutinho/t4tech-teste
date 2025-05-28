@@ -10,8 +10,6 @@ import { usePlayersStore, useSelectedPlayerStore } from '@/stores/players'
 const playersStore = usePlayersStore()
 const selectedPlayerStore = useSelectedPlayerStore()
 
-const globalFilter = ref('')
-
 const filter = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
@@ -23,9 +21,15 @@ const columns = ref([
 
 const passthroughClasses = {
   root: { class: 'w-full' },
-  table: { class: 'w-full table-auto'}
+  table: { class: 'w-full table-auto border-collapse' },
+  header: { class: 'bg-gray-100' },
+  headerrow: { class: 'text-left' },
+  bodyrow: { class: 'even:bg-slate-900' },
+  paginator: {
+    root: { class: 'flex justify-between p-4 bg-gray-100' },
+    pagebutton: { class: 'px-3 py-1 border rounded hover:bg-gray-200' }
+  }
 }
-
 </script>
 
 <template class="datatable-players">
@@ -33,12 +37,13 @@ const passthroughClasses = {
     <InputText
       v-model="filter.global.value"
       placeholder="Search by name"
+      class="border border-gray-300 p-2 rounded-md mb-4 w-full"
     />
     <DataTable
       :value="playersStore.getAllPlayers()"
       paginator
       :rows="25"
-      class="w-full table-auto"
+      :unstyled="true"
       :pt="passthroughClasses"
       :globalFilterFields="['first_name', 'last_name']"
       v-model:filters="filter"
@@ -60,7 +65,7 @@ const passthroughClasses = {
       </Column>
       <Column>
         <template #header>
-          <span>Edit</span>
+          <span class="whitespace-nowrap">Edit</span>
         </template>
         <template #body="{ data }">
           <button class="opacity-50 hover:opacity-100 cursor-pointer" @click="selectedPlayerStore.setId(data.id)">
@@ -68,6 +73,16 @@ const passthroughClasses = {
           </button>
         </template>
       </Column>
+        <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
+          <div class="flex items-center gap-4 w-full py-1 px-2 justify-around">
+            <div class="flex gap-2">
+              <Button class="w-8 h-8 bg-white text-black rounded-full cursor-pointer" @click="prevPageCallback" :disabled="page === 0"><</Button>
+              <span class="hidden sm:block">Showing {{ first }} to {{ last }} of {{ totalRecords }}</span>
+              <span class="block sm:hidden">Page {{ page + 1 }} of {{ pageCount }}</span>
+              <Button class="w-8 h-8 bg-white text-black rounded-full cursor-pointer" @click="nextPageCallback" :disabled="page === pageCount - 1">></Button>
+            </div>
+          </div>
+        </template>
     </DataTable>
   </div>
 </template>

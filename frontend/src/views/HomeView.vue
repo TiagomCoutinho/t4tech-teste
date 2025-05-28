@@ -4,7 +4,7 @@ import PopupEditPlayer from '@/components/PopupEditPlayer.vue'
 </script>
 
 <template>
-  <div class="home py-8">
+  <div class="home">
     <PlayersDatatable />
     <PopupEditPlayer />
   </div>
