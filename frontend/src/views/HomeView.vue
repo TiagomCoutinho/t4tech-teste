@@ -3,8 +3,7 @@ import PlayersDatatable from '@/components/PlayersDatatable.vue'
 </script>
 
 <template>
-  <div class="home">
-    <h1>This is the home page</h1>
+  <div class="home py-8">
     <PlayersDatatable />
   </div>
 </template>
