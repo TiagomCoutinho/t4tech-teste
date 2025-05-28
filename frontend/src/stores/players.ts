@@ -34,23 +34,22 @@ export const usePlayersStore = defineStore('players', () => {
 		try {
 			const response = await axios.put(`${import.meta.env.VITE_BACKEND_API_URL}players/${id}`, updatedPlayer)
 			if (response.status === 200) {
-				updatePlayerById(id, response.data)
+				updatePlayerById(id, updatedPlayer)
+				useSelectedPlayerStore().setId(null)
+				return true
 			} else {
-				console.error('Failed to update player:', response.statusText)
+				return false
 			}
 		} catch (error) {
-			console.error('Error updating player:', error)
+			return false
 		}
 	}
 
 	async function fetchDeletePlayerById(id: number) {
 		try {
-			const response = await axios.delete(`${import.meta.env.VITE_BACKEND_API_URL}players/${id}`)
-			if (response.status === 200) {
-				deletePlayerById(id)
-			} else {
-				console.error('Failed to delete player:', response.statusText)
-			}
+			await axios.delete(`${import.meta.env.VITE_BACKEND_API_URL}players/${id}`)
+			deletePlayerById(id)
+			useSelectedPlayerStore().setId(null)
 		} catch (error) {
 			console.error('Error deleting player:', error)
 		}
@@ -69,7 +68,7 @@ export const usePlayersStore = defineStore('players', () => {
 		}
   }
 
-  return { setPlayers, getPlayerById, getAllPlayers, fetchAllPlayers, fetchDeletePlayerById, fetchUpdatePlayerById }
+  return { players, setPlayers, getPlayerById, getAllPlayers, fetchAllPlayers, fetchDeletePlayerById, fetchUpdatePlayerById }
 })
 
 export const useSelectedPlayerStore = defineStore('selectedPlayer', () => {
@@ -82,5 +81,5 @@ export const useSelectedPlayerStore = defineStore('selectedPlayer', () => {
 		return selectedPlayerId.value
 	}
 
-	return { setId, getId }
+	return { selectedPlayerId, setId, getId }
 })

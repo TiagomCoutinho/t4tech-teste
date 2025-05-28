@@ -76,10 +76,10 @@ const passthroughClasses = {
         <template #paginatorcontainer="{ first, last, page, pageCount, prevPageCallback, nextPageCallback, totalRecords }">
           <div class="flex items-center gap-4 w-full py-1 px-2 justify-around">
             <div class="flex gap-2">
-              <Button class="w-8 h-8 bg-white text-black rounded-full cursor-pointer" @click="prevPageCallback" :disabled="page === 0"><</Button>
+              <button class="w-8 h-8 bg-white text-black rounded-full cursor-pointer" @click="prevPageCallback" :disabled="page === 0"><</button>
               <span class="hidden sm:block">Showing {{ first }} to {{ last }} of {{ totalRecords }}</span>
               <span class="block sm:hidden">Page {{ page + 1 }} of {{ pageCount }}</span>
-              <Button class="w-8 h-8 bg-white text-black rounded-full cursor-pointer" @click="nextPageCallback" :disabled="page === pageCount - 1">></Button>
+              <button class="w-8 h-8 bg-white text-black rounded-full cursor-pointer" @click="nextPageCallback" :disabled="page === pageCount - 1">></button>
             </div>
           </div>
         </template>
