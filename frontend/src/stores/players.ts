@@ -69,5 +69,18 @@ export const usePlayersStore = defineStore('players', () => {
 		}
   }
 
-  return { players, setPlayers, getPlayerById, getAllPlayers, fetchAllPlayers, fetchDeletePlayerById, fetchUpdatePlayerById }
+  return { setPlayers, getPlayerById, getAllPlayers, fetchAllPlayers, fetchDeletePlayerById, fetchUpdatePlayerById }
+})
+
+export const useSelectedPlayerStore = defineStore('selectedPlayer', () => {
+	const selectedPlayerId = ref<number | null>(null)
+
+	function setId(id: number | null) {
+		selectedPlayerId.value = id
+	}
+	function getId() {
+		return selectedPlayerId.value
+	}
+
+	return { setId, getId }
 })

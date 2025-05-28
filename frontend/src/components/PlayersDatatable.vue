@@ -3,9 +3,12 @@ import { ref } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
-import { usePlayersStore } from '@/stores/players'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import { FilterMatchMode } from '@primevue/core/api'
+import { usePlayersStore, useSelectedPlayerStore } from '@/stores/players'
+
+const playersStore = usePlayersStore()
+const selectedPlayerStore = useSelectedPlayerStore()
 
 const globalFilter = ref('')
 
@@ -18,8 +21,6 @@ const columns = ref([
   { field: 'first_name', header: 'Full name', sortable: true }
 ])
 
-const playersStore = usePlayersStore()
-
 const passthroughClasses = {
   root: { class: 'w-full' },
   table: { class: 'w-full table-auto'}
@@ -27,7 +28,7 @@ const passthroughClasses = {
 
 </script>
 
-<template>
+<template class="datatable-players">
   <div>
     <InputText
       v-model="filter.global.value"
@@ -62,7 +63,7 @@ const passthroughClasses = {
           <span>Edit</span>
         </template>
         <template #body="{ data }">
-          <button class="opacity-50 hover:opacity-100 cursor-pointer" @click="console.log('Edit', data.id)">
+          <button class="opacity-50 hover:opacity-100 cursor-pointer" @click="selectedPlayerStore.setId(data.id)">
             <IconEdit />
           </button>
         </template>
